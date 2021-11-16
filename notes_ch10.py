@@ -29,11 +29,6 @@ class Velo:
 
 
 
-
-
-
-
-
 if __name__ == "__main__":
 	velo = Velo("rouge", 10) # reference a def ()
 
