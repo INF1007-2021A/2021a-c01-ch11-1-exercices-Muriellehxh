@@ -47,3 +47,8 @@ if __name__ == "__main__":
     print(velo1 + velo2)  # while using def __add__
 
 # error in yellow??
+
+
+' ** NOTE ** '
+
+' @property sert à accéder à attribut privé à extérieur de def '
