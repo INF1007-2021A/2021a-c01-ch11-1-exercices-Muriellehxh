@@ -19,6 +19,8 @@ class Weapon:
 	:param min_level: Le niveau minimal pour l'utiliser
 	"""
 
+
+
 	def __init__(self, weapon_name: str, power: int, min_level: int):
 		self.__weapon_name = weapon_name  # ne peut etre changé
 		self.power = power
@@ -44,22 +46,39 @@ class Character(Weapon):
 	def __init__(self, name, max_hp, attack, defense, level, weapon_name: str, power: int, min_level: int):
 		super().__init__(weapon_name, power, min_level)
 
-		self.__name = name
+		self.name = name
 		self.max_hp = max_hp
 		self.attack = attack
 		self.defense = defense
 		self.level = level
-		self.hp = max_hp
+		self.weapon = weapon_name
+
+
 
 	def compute_damage(self, defender: "Character"):
-		return (( ( (2/5) * self.level + 2 )* self.power * (self.attack/defender.defense))/50 +2) * ()
+		rand_crit = random.choices([1, 2], weights=(93.75, 6.25), k=1)
+		rand_crit_str = ''.join(str(e) for e in rand_crit)
+		rand_num = random.randrange(85, 100)
+		return (( ( (2/5) * float(self.level) + 2 )* float(self.power) * float(self.attack/defender.defense))/50 + 2) * float(rand_crit_str * rand_num)
 
 
 def deal_damage(attacker, defender):
 	# TODO: Calculer dégâts
-	pass
+
+	damage = Character.compute_damage(attacker, defender)
+	return f"{attacker.name} used {attacker.weapon} \n" \
+		   f"   {defender.name} took {damage} dmg"
 
 
 def run_battle(c1, c2):
 	# TODO: Initialiser attaquant/défendeur, tour, etc.
 	pass
+
+
+c1 = Character("Äpik", 200, 150, 70, 70, "BFG", 100, 69)
+c2 = Character("Gämmor", 250, 100, 120, 60, "Deku Stick", 120, 1)
+
+c1.weapon = Weapon("BFG", 100, 69)
+c2.weapon = Weapon("Deku Stick", 120, 1)
+
+deal_damage(c1, c2)
