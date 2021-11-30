@@ -12,6 +12,7 @@ class Weapon:
 
     UNARMED_POWER = 20
 
+
     def __init__(self, name, power, min_level):
         self.__name = name
         self.power = power
@@ -112,3 +113,6 @@ def run_battle(c1: Character, c2: Character):
         attacker, defender = defender, attacker
     # TODO: Retourner nombre de tours effectués
     return turns
+
+if __name__ == '__main__':
+    c1 = Character("Äpik", 200, 150, 70, 70)

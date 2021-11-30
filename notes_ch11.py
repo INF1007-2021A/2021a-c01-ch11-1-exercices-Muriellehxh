@@ -49,6 +49,7 @@ if __name__ == "__main__":
 # error in yellow??
 
 
-' ** NOTE ** '
+# TODO: notes sur properties
 
 ' @property sert à accéder à attribut privé à extérieur de def '
+' @setproperty sert à accéder à attribut privé ET modifier aattribut '
