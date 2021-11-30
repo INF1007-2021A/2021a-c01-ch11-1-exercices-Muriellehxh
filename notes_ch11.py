@@ -6,7 +6,7 @@
 
 
 class Velo:
-    def __init__(self, color, position):  # on donne valeur en parametre
+    def __init__(self, color, position=0):  # on donne valeur en parametre
         self.__color = "bleu"  # =  attribut privé (empeche modification à exterieur)
         self.color = "bleu"  # =  attribut public
         self.position = 0
