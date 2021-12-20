@@ -13,6 +13,15 @@
 # TODO: NOTER DIAPOSITIVES 21 & 22 !! (TABLEAU SURCHAGES)
 
 
+# TODO: Vérifier type classe et vérifier héritage classe:
+# TYPE:  isinstance(resultat, Employe)
+    # exemple: resultat = Employe()
+    # PEUT AUSSI MARCHER POUR :  ex:  isinstance(Regulier, Employe)
+
+# HÉRITAGE:  issubclass(Regulier, Employe)
+    # Exemple:
+    # class Regulier(Employe):
+
 
 class Velo():
     def __init__(self, color, position=0):  # on donne valeur en parametre
@@ -62,7 +71,7 @@ class Puissance2():
 
 numbers = Puissance2(3)
 i = iter(numbers)
-print(next(i))
+print(next(i)) # we have access to next method, so we get next iteration
 print(next(i))
 
 if __name__ == "__main__":
