@@ -26,14 +26,13 @@ class Weapon:
     def make_unarmed(self):
         return self.__init__("Unarmed", 20, 1)
 
-    UNARMED_POWER = 20
 
-    @property
+    @property  # pour accéder à attribut privé, comme dans def en haut
     def weapon_name(self):
         return self.__weapon_name
 
 
-class Character(Weapon):   # TODO: DONT MAKE WEAPON une classe fille, car character va  QUE  hériter de Weapon, mais va PAS contenir weapon
+class Character:   # TODO: DONT MAKE WEAPON une classe fille, car character va  QUE  hériter de Weapon, mais va PAS contenir weapon
                            # TODO: on a besoin de en paramètre de character (weapon: Weapon)
 
     """
@@ -46,8 +45,7 @@ class Character(Weapon):   # TODO: DONT MAKE WEAPON une classe fille, car charac
 	:param level: Le niveau d'expérience du personnage
 	"""
 
-    def __init__(self, name, max_hp, attack, defense, level, weapon: Weapon, power: int, min_level: int):
-        super().__init__(weapon_name, power, min_level)
+    def __init__(self, name, max_hp, attack, defense, level, weapon: Weapon):
 
         self.__name = name
         self.max_hp = max_hp
@@ -57,15 +55,17 @@ class Character(Weapon):   # TODO: DONT MAKE WEAPON une classe fille, car charac
         self.weapon = weapon
         self.hp = max_hp   # TODO: quand on modifie un attribut avec @hp.setter, faut mettre un @property, car hp.setter rend hp un attribut privé
 
-    @property
+    @property  # to use self.__name outside of innit
     def name(self):
         return self.__name
 
+
     def compute_damage(self, defender: "Character"):
         rand_crit = random.choices([1, 2], weights=(93.75, 6.25), k=1)
-        rand_crit_str = ''.join(str(e) for e in rand_crit)
-        rand_num = random.uniform(0.85, 0.1)
-        return ((((2 / 5) * float(self.level) + 2) * float(self.weapon.power) * float(self.attack / defender.defense)) / 50 + 2) * float(rand_crit_str * rand_num)
+        rand_crit_num = ''.join(str(e) for e in rand_crit)
+        rand_num = random.uniform(0.85, 1)
+        print(rand_num)
+        return ((((2 / 5) * float(self.level) + 2) * float(self.weapon.power) * float(self.attack / defender.defense)) / 50 + 2) * float(float(rand_crit_num) * rand_num)
 
 
 def deal_damage(attacker, defender):
