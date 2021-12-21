@@ -8,7 +8,7 @@ from unittest import mock
 import inspect
 import random
 
-from game import *
+from game_corrigepasted_for_test import *
 
 
 class TestWeapon(unittest.TestCase):

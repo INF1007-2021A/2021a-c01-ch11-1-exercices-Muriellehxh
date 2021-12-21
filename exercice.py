@@ -1,4 +1,4 @@
-from game import *
+from game_corrigepasted_for_test import *
 
 
 def main():

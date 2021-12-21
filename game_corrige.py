@@ -1,120 +1,96 @@
+
+
+"""
+Chapitre 11.1
+
+Classes pour représenter un personnage.
+"""
+
 import random
+
 import utils
 
 
 class Weapon:
     """
-    Une arme dans le jeu.
-    :param name: Le nom de l'arme
-    :param power: Le niveau d'attaque
-    :param min_level: Le niveau minimal pour l'utiliser
-    """
+	Une arme dans le jeu.
 
-    UNARMED_POWER = 20
+	:param name: Le nom de l'arme
+	:param power: Le niveau d'attaque
+	:param min_level: Le niveau minimal pour l'utiliser
+	"""
 
-
-    def __init__(self, name, power, min_level):
-        self.__name = name
+    def __init__(self, weapon_name: str, power: int, min_level: int):
+        self.__weapon_name = weapon_name  # ne peut etre changé
         self.power = power
         self.min_level = min_level
 
-    @property
-    def name(self):
-        return self.__name
-
-    # TODO: make_unarmed
-    @classmethod
-    def make_unarmed(cls):
-        return cls("Unarmed", cls.UNARMED_POWER, 1)
+    def make_unarmed(self):
+        return self.__init__("Unarmed", 20, 1)
 
 
-class Character:
+    @property  # pour accéder à attribut privé, comme dans def en haut
+    def weapon_name(self):
+        return self.__weapon_name
+
+
+class Character:   # TODO: DONT MAKE WEAPON une classe fille, car character va  QUE  hériter de Weapon, mais va PAS contenir weapon
+                           # TODO: on a besoin de en paramètre de character (weapon: Weapon)
+
     """
-    Un personnage dans le jeu
-    :param name: Le nom du personnage
-    :param max_hp: HP maximum
-    :param attack: Le niveau d'attaque du personnage
-    :param defense: Le niveau de défense du personnage
-    :param level: Le niveau d'expérience du personnage
-    """
+	Un personnage dans le jeu
 
-    def __init__(self, name, max_hp, attack, defense, level):
+	:param name: Le nom du personnage
+	:param max_hp: HP maximum
+	:param attack: Le niveau d'attaque du personnage
+	:param defense: Le niveau de défense du personnage
+	:param level: Le niveau d'expérience du personnage
+	"""
+
+    def __init__(self, name, max_hp, attack, defense, level, weapon: Weapon):
+
         self.__name = name
         self.max_hp = max_hp
         self.attack = attack
         self.defense = defense
         self.level = level
-        self.weapon = None
-        self.hp = max_hp
+        self.weapon = weapon
+        self.hp = max_hp   # TODO: quand on modifie un attribut avec @hp.setter, faut mettre un @property, car hp.setter rend hp un attribut privé
 
-    @property
+    @property  # to use self.__name outside of innit
     def name(self):
         return self.__name
 
-    @property
-    def weapon(self):
-        return self.__weapon
 
-    # laisser utiliateur choisir weapon
-    # TODO: Affecter ce qui est passé comme valeur. Si la valeur est None, je lui met une arme vide (le Unarmed)
-    @weapon.setter
-    def weapon(self, val):
-        if val is None:
-            val = Weapon.make_unarmed()
-        if val.min_level > self.level:
-            raise ValueError(Weapon)
-        self.__weapon = val
+    def compute_damage(self, defender: "Character"):
+        rand_crit = random.choices([1, 2], weights=(93.75, 6.25), k=1)
+        rand_crit_num = ''.join(str(e) for e in rand_crit)
+        rand_num = random.uniform(0.85, 1)
+        print(rand_num)
+        return ((((2 / 5) * float(self.level) + 2) * float(self.weapon.power) * float(self.attack / defender.defense)) / 50 + 2) * float(float(rand_crit_num) * rand_num)
 
 
-    # we redefine hp by making it a property and adding a setter so that we can modify it throughout battle
-    # TODO: Définir getter/setter pour `hp`, qui doit être borné entre 0 et `max_hp`
-    @property
-    def hp(self):
-        return self.__hp
-
-    @hp.setter
-    def hp(self, val):
-        self.__hp = utils.clamp(val, 0, self.max_hp)
-
-    def compute_damage(self, other: "Character"):
-        level_factor = (2 * self.level) / 5 + 2
-        weapon_factor = self.weapon.power
-        atk_def_factor = self.attack / other.defense
-        critical = random.random() <= 1 / 16
-        modifier = (2 if critical else 1) * random.uniform(0.85, 1.0)
-        damage = ((level_factor * weapon_factor * atk_def_factor) / 50 + 2) * modifier
-
-        return int(round(damage)), critical
-
-
-def deal_damage(attacker: Character, defender: Character):
+def deal_damage(attacker, defender):
     # TODO: Calculer dégâts
-    damage, crit = attacker.compute_damage(defender)
-    defender.hp -= damage  # modification to hp
-    print(f"{attacker.name} used {attacker.weapon.name}")
-    if crit:
-        print("  Critical hit!")
-    print(f"  {defender.name} took {damage} dmg")
+
+    damage = Character.compute_damage(attacker, defender)
+    return f"{attacker.name} used {attacker.weapon.weapon_name} \n" \
+           f"   {defender.name} took {damage} dmg"
 
 
-def run_battle(c1: Character, c2: Character):
+def run_battle(c1, c2):
     # TODO: Initialiser attaquant/défendeur, tour, etc.
     attacker = c1
     defender = c2
-    turns = 1
-    print(f"{attacker.name} starts a battle with {defender.name}!")
-    while True:
-        # TODO: Appliquer l'attaque
-        deal_damage(attacker, defender)
-        # TODO: Si le défendeur est mort
-        if defender.hp == 0:
-            print(f"{defender.name} is sleeping with the fishes.")
-            break
-        turns += 1
-        # Échanger attaquant/défendeur
-        attacker, defender = defender, attacker
-    # TODO: Retourner nombre de tours effectués
-    return turns
 
-if __name__ == '__main__':
-    c1 = Character("Äpik", 200, 150, 70, 70)
+
+
+c1 = Character("Äpik", 200, 150, 70, 70)
+c2 = Character("Gämmor", 250, 100, 120, 60)
+
+c1.weapon = Weapon("BFG", 100, 69)
+c2.weapon = Weapon("Deku Stick", 120, 1)
+
+deal_damage(c1, c2)
+
+print(run_battle(c1, c2))
