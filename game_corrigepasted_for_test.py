@@ -55,7 +55,7 @@ class Character:
     def weapon(self):
         return self.__weapon
 
-    # laisser utiliateur choisir weapon
+    # weapon changes
     # val représente weapon, if weapon is none (like at beginning, we put arme vide)
     # TODO: Affecter ce qui est passé comme valeur. Si la valeur est None, je lui met une arme vide (le Unarmed)
     @weapon.setter
